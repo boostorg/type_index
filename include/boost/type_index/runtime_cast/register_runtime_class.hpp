@@ -55,12 +55,12 @@ inline type_index runtime_class_construct_type_id(T const*) {
 /// \b Example:
 /// \code
 /// struct base1 {
-///     BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS(BOOST_TYPE_INDEX_NO_BASE_CLASS)
+///     BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS(BOOST_TYPE_INDEX_ROOT_CLASS)
 ///     virtual ~base1();
 /// };
 ///
 /// struct base2 {
-///     BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS(BOOST_TYPE_INDEX_NO_BASE_CLASS)
+///     BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS(BOOST_TYPE_INDEX_ROOT_CLASS)
 ///     virtual ~base2();
 /// };
 ///
@@ -81,7 +81,7 @@ inline type_index runtime_class_construct_type_id(T const*) {
 /// \endcode
 ///
 /// \param base_class_seq A Boost.Preprocessor sequence of the current class' direct bases, or
-/// BOOST_TYPE_INDEX_NO_BASE_CLASS if this class has no direct base classes.
+/// BOOST_TYPE_INDEX_ROOT_CLASS if this class has no direct base classes.
 #define BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS(base_class_seq)                                                          \
     BOOST_TYPE_INDEX_REGISTER_CLASS 																					 \
     BOOST_TYPE_INDEX_IMPLEMENT_RUNTIME_CAST(base_class_seq)
@@ -96,12 +96,12 @@ inline type_index runtime_class_construct_type_id(T const*) {
 /// \b Example:
 /// \code
 /// struct base1 {
-///     BOOST_TYPE_INDEX_IMPLEMENT_RUNTIME_CAST(BOOST_TYPE_INDEX_NO_BASE_CLASS)
+///     BOOST_TYPE_INDEX_IMPLEMENT_RUNTIME_CAST(BOOST_TYPE_INDEX_ROOT_CLASS)
 ///     virtual ~base1();
 /// };
 ///
 /// struct base2 {
-///     BOOST_TYPE_INDEX_IMPLEMENT_RUNTIME_CAST(BOOST_TYPE_INDEX_NO_BASE_CLASS)
+///     BOOST_TYPE_INDEX_IMPLEMENT_RUNTIME_CAST(BOOST_TYPE_INDEX_ROOT_CLASS)
 ///     virtual ~base2();
 /// };
 ///
@@ -121,7 +121,7 @@ inline type_index runtime_class_construct_type_id(T const*) {
 /// \endcode
 ///
 /// \param base_class_seq A Boost.Preprocessor sequence of the current class' direct bases, or
-/// BOOST_TYPE_INDEX_NO_BASE_CLASS if this class has no direct base classes.
+/// BOOST_TYPE_INDEX_ROOT_CLASS if this class has no direct base classes.
 #define BOOST_TYPE_INDEX_IMPLEMENT_RUNTIME_CAST(base_class_seq)                                                          \
     virtual void const* boost_type_index_find_instance_(boost::typeindex::type_index const& idx) const BOOST_NOEXCEPT {  \
         if(idx == boost::typeindex::detail::runtime_class_construct_type_id(this))                                       \
@@ -130,9 +130,9 @@ inline type_index runtime_class_construct_type_id(T const*) {
          return NULL;                                                                                                    \
     }
 
-/// \def BOOST_TYPE_INDEX_NO_BASE_CLASS
+/// \def BOOST_TYPE_INDEX_ROOT_CLASS
 /// \brief Instructs BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS and BOOST_TYPE_INDEX_IMPLEMENT_RUNTIME_CAST
 /// that this class has no base classes.
-#define BOOST_TYPE_INDEX_NO_BASE_CLASS BOOST_PP_SEQ_NIL
+#define BOOST_TYPE_INDEX_ROOT_CLASS BOOST_PP_SEQ_NIL
 
 #endif // BOOST_TYPE_INDEX_RUNTIME_CAST_REGISTER_RUNTIME_CLASS_HPP
