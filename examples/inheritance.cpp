@@ -22,7 +22,7 @@ struct A {
 };
 struct B: public A { BOOST_TYPE_INDEX_REGISTER_CLASS };
 struct C: public B { BOOST_TYPE_INDEX_REGISTER_CLASS };
-struct D: public C { BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS(BOOST_TYPE_INDEX_NO_BASE_CLASS) };
+struct D: public C { BOOST_TYPE_INDEX_REGISTER_RUNTIME_CLASS(BOOST_TYPE_INDEX_ROOT_CLASS) };
 
 void print_real_type(const A& a) {
     std::cout << boost::typeindex::type_id_runtime(a).pretty_name() << '\n';
