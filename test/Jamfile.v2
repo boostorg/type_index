@@ -6,6 +6,7 @@
 
 require-b2 5.0.1 ;
 import-search /boost/config/checks ;
+import-search /boost/config/checks ;
 import config : requires ;
 import testing ;
 import feature ;
@@ -47,7 +48,7 @@ lib test_lib_rtti_compat : test_lib_rtti_compat-obj : <link>shared $(nortti) $(c
 exe testing_crossmodule_anonymous_no_rtti : testing_crossmodule_anonymous.cpp test_lib_anonymous_nortti : <rtti>off $(norttidefines) ;
 
 test-suite type_index
-  : 
+  :
     [ run type_index_test.cpp /boost/lexical_cast//boost_lexical_cast ]
     [ run type_index_runtime_cast_test.cpp /boost/smart_ptr//boost_smart_ptr ]
     [ run type_index_constexpr_test.cpp ]
@@ -66,15 +67,15 @@ test-suite type_index
     # Mixing RTTI on and off
 
     # MSVC sometimes overrides the /GR-, without `detect_missmatch` this test may link.
-    # TODO: Disabled on MSVC. Enable again when there'll be an understanding of how to write this test correctly wor MSVC. 
+    # TODO: Disabled on MSVC. Enable again when there'll be an understanding of how to write this test correctly wor MSVC.
     [ link-fail testing_crossmodule.cpp test_lib_rtti : $(nortti)  <toolset>msvc:<build>no : link_fail_nortti_rtti ]
     [ link-fail testing_crossmodule.cpp test_lib_nortti : <toolset>msvc:<build>no : link_fail_rtti_nortti ]
 
     [ run testing_crossmodule.cpp test_lib_rtti_compat : : : $(nortti) $(compat) : testing_crossmodule_nortti_rtti_compat ]
     [ run testing_crossmodule.cpp test_lib_nortti_compat : : : $(compat) : testing_crossmodule_rtti_nortti_compat ]
   ;
-  
-# Assuring that examples compile and run. Adding sources from `examples` directory to the `type_index` test suite. 
+
+# Assuring that examples compile and run. Adding sources from `examples` directory to the `type_index` test suite.
 for local p in [ glob ../examples/*.cpp ]
 {
     # RTTI on
