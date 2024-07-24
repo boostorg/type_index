@@ -5,19 +5,22 @@
 
 require-b2 5.2 ;
 
+constant boost_dependencies :
+    /boost/config//boost_config
+    /boost/container_hash//boost_container_hash
+    /boost/core//boost_core
+    /boost/throw_exception//boost_throw_exception ;
+
 project /boost/type_index
     : common-requirements
-        <library>/boost/config//boost_config
-        <library>/boost/container_hash//boost_container_hash
-        <library>/boost/core//boost_core
-        <library>/boost/throw_exception//boost_throw_exception
         <include>include
     ;
 
 explicit
-    [ alias boost_type_index ]
+    [ alias boost_type_index : : : : <library>$(boost_dependencies) ]
     [ alias all : boost_type_index test ]
     ;
 
 call-if : boost-library type_index
     ;
+
