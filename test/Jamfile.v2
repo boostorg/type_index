@@ -15,6 +15,7 @@ import os ;
 project
     : source-location .
     : requirements
+        <library>/boost/type_index//boost_type_index
         [ requires cxx11_rvalue_references ]
     ;
 
