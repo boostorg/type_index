@@ -49,11 +49,11 @@ set(BOOST_TEST_LINK_LIBRARIES Boost::type_index Boost::core)
 boost_test(TYPE run SOURCES type_index_test.cpp)
 boost_test(TYPE run SOURCES type_index_runtime_cast_test.cpp LINK_LIBRARIES Boost::smart_ptr)
 boost_test(TYPE run SOURCES type_index_constexpr_test.cpp)
-boost_test(TYPE run SOURCES type_index_test.cpp COMPILE_OPTIONS -fno-rtti NAME type_index_test_no_rtti)
+boost_test(TYPE run SOURCES type_index_test.cpp COMPILE_OPTIONS ${BOOST_TYPEINDEX_DETAIL_NO_RTTI} NAME type_index_test_no_rtti)
 boost_test(TYPE run SOURCES ctti_print_name.cpp)
 
 boost_test(TYPE run SOURCES testing_crossmodule.cpp LINK_LIBRARIES boost_type_index_test_lib_rtti)
-boost_test(TYPE run SOURCES testing_crossmodule.cpp LINK_LIBRARIES boost_type_index_test_lib_nortti COMPILE_OPTIONS -fno-rtti NAME testing_crossmodule_no_rtti)
+boost_test(TYPE run SOURCES testing_crossmodule.cpp LINK_LIBRARIES boost_type_index_test_lib_nortti COMPILE_OPTIONS  ${BOOST_TYPEINDEX_DETAIL_NO_RTTI} NAME testing_crossmodule_no_rtti)
 boost_test(TYPE run SOURCES testing_crossmodule_anonymous.cpp LINK_LIBRARIES boost_type_index_test_lib_anonymous_rtti)
 
 boost_test(TYPE run SOURCES compare_ctti_stl.cpp)
@@ -64,10 +64,10 @@ boost_test(TYPE compile-fail SOURCES type_index_test_ctti_construct_fail.cpp)
 boost_test(TYPE compile SOURCES type_index_test_ctti_alignment.cpp)
 
 # Mixing RTTI on and off
-boost_test(TYPE link-fail SOURCES testing_crossmodule.cpp LINK_LIBRARIES boost_type_index_test_lib_rtti COMPILE_OPTIONS -fno-rtti NAME link_fail_nortti_rtti)
+boost_test(TYPE link-fail SOURCES testing_crossmodule.cpp LINK_LIBRARIES boost_type_index_test_lib_rtti COMPILE_OPTIONS  ${BOOST_TYPEINDEX_DETAIL_NO_RTTI} NAME link_fail_nortti_rtti)
 boost_test(TYPE link-fail SOURCES testing_crossmodule.cpp LINK_LIBRARIES boost_type_index_test_lib_nortti NAME link_fail_rtti_nortti)
 
-boost_test(TYPE run SOURCES testing_crossmodule.cpp LINK_LIBRARIES boost_type_index_test_lib_rtti_compat COMPILE_OPTIONS -fno-rtti NAME testing_crossmodule_nortti_rtti_compat)
+boost_test(TYPE run SOURCES testing_crossmodule.cpp LINK_LIBRARIES boost_type_index_test_lib_rtti_compat COMPILE_OPTIONS  ${BOOST_TYPEINDEX_DETAIL_NO_RTTI} NAME testing_crossmodule_nortti_rtti_compat)
 boost_test(TYPE run SOURCES testing_crossmodule.cpp LINK_LIBRARIES boost_type_index_test_lib_nortti_compat NAME testing_crossmodule_rtti_nortti_compat)
 
 file(GLOB EXAMPLE_FILES "../examples/*.cpp")
@@ -76,6 +76,6 @@ foreach (testsourcefile ${EXAMPLE_FILES})
 
     get_filename_component(testname ${testsourcefile} NAME_WE)
     if(NOT testname STREQUAL "table_of_names")
-        boost_test(TYPE run SOURCES ${testsourcefile} NAME ${testname}_no_rtti COMPILE_OPTIONS -fno-rtti INCLUDE_DIRECTORIES ../examples LINK_LIBRARIES Boost::unordered)
+        boost_test(TYPE run SOURCES ${testsourcefile} NAME ${testname}_no_rtti COMPILE_OPTIONS  ${BOOST_TYPEINDEX_DETAIL_NO_RTTI} INCLUDE_DIRECTORIES ../examples LINK_LIBRARIES Boost::unordered)
     endif()
 endforeach()
