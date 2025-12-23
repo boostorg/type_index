@@ -31,8 +31,8 @@ struct my_template {};
 template<typename T>
 void compare()
 {
-    typedef boost::typeindex::ctti_type_index ctti;
-    typedef boost::typeindex::stl_type_index stl;
+    using ctti = boost::typeindex::ctti_type_index;
+    using stl = boost::typeindex::stl_type_index;
     BOOST_TEST_EQ(
         ctti::type_id<T>().pretty_name(),
         stl::type_id<T>().pretty_name()

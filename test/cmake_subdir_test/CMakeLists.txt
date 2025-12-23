@@ -14,7 +14,6 @@ foreach(dep IN ITEMS
   describe
   mp11
   smart_ptr
-  static_assert
   throw_exception
   unordered
   predef)

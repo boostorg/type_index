@@ -36,7 +36,7 @@ int main()
         << ctti_type_index::type_id<user_defined_namespace::user_defined_class>() << '\n';
 
 
-    std::cout << "empty:"
+    std::cout << "empty: "
         << ctti_type_index::type_id<empty>() << '\n';
 
     return 0;

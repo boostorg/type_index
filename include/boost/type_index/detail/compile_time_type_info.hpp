@@ -224,25 +224,25 @@ constexpr ctti_skip skip() noexcept { return detail::make_ctti_skip(0, 0, ""); }
 
     template <unsigned int... Left, unsigned int... Right>
     struct make_index_sequence_join<index_seq<Left...>, index_seq<Right...> > {
-        typedef index_seq<Left..., Right...> type;
+        using type = index_seq<Left..., Right...>;
     };
 
     template <unsigned int C, unsigned int D>
     struct make_index_seq_impl {
-        typedef typename make_index_sequence_join<
+        using type = typename make_index_sequence_join<
             typename make_index_seq_impl<C, D / 2>::type,
             typename make_index_seq_impl<C + D / 2, (D + 1) / 2>::type
-        >::type type;
+        >::type;
     };
 
     template <unsigned int C>
     struct make_index_seq_impl<C, 0> {
-        typedef index_seq<> type;
+        using type = index_seq<>;
     };
 
     template <unsigned int C>
     struct make_index_seq_impl<C, 1> {
-        typedef index_seq<C> type;
+        using type = index_seq<C>;
     };
 
     template <char... C>
@@ -315,10 +315,10 @@ struct ctti {
         >();
         static_assert(!boost::typeindex::detail::skip().until_runtime_length, "Skipping for GCC in C++14 mode is unsupported");
 
-        typedef typename boost::typeindex::detail::make_index_seq_impl<
+        using idx_seq = typename boost::typeindex::detail::make_index_seq_impl<
             boost::typeindex::detail::skip().size_at_begin,
             size - sizeof("const *") + 1 - boost::typeindex::detail::skip().size_at_begin
-        >::type idx_seq;
+        >::type;
         return impl(idx_seq());
     }
 #else

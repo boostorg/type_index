@@ -112,7 +112,7 @@ class ctti_type_index: public type_index_facade<ctti_type_index, detail::ctti_da
     {}
 
 public:
-    typedef detail::ctti_data type_info_t;
+    using type_info_t = detail::ctti_data;
 
     BOOST_CXX14_CONSTEXPR inline ctti_type_index() noexcept
         : data_(boost::detail::ctti<void>::n())
@@ -164,8 +164,8 @@ BOOST_CXX14_CONSTEXPR inline bool ctti_type_index::before(const ctti_type_index&
 
 template <class T>
 BOOST_CXX14_CONSTEXPR inline ctti_type_index ctti_type_index::type_id() noexcept {
-    typedef typename std::remove_reference<T>::type no_ref_t;
-    typedef typename std::remove_cv<no_ref_t>::type no_cvr_t;
+    using no_ref_t = typename std::remove_reference<T>::type;
+    using no_cvr_t = typename std::remove_cv<no_ref_t>::type;
     return ctti_type_index(boost::detail::ctti<no_cvr_t>::n());
 }
 
