@@ -147,11 +147,29 @@ void constexpr_test() {
 #endif // #if !defined(_MSC_VER) || _MSC_VER > 1916
 }
 
+void constexpr_known_names_test() {
+    using boost::typeindex::ctti_type_index;
+
+    BOOST_TEST_EQ(std::string(ctti_type_index::type_id<int>().name()), "int");
+    BOOST_TEST_EQ(std::string(ctti_type_index::type_id<void>().name()), "void");
+}
+
+void not_constexpr_known_names_test() {
+    using boost::typeindex::ctti_type_index;
+
+    BOOST_TEST_EQ(ctti_type_index::type_id<int>().pretty_name(), "int");
+    BOOST_TEST_EQ(ctti_type_index::type_id<void>().pretty_name(), "void");
+}
 
 int main() {
     strcmp_same();
     search_same();
     constexpr_test();
+#if !defined(BOOST_NO_CXX14_CONSTEXPR)
+    constexpr_known_names_test();
+#else
+    not_constexpr_known_names_test();
+#endif
     return boost::report_errors();
 }
 
