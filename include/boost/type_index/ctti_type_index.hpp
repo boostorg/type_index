@@ -164,13 +164,27 @@ inline const ctti_type_index::type_info_t& ctti_type_index::type_info() const no
 BOOST_CXX14_CONSTEXPR inline bool ctti_type_index::equal(const ctti_type_index& rhs) const noexcept {
     const char* const left = raw_name();
     const char* const right = rhs.raw_name();
-    return /*left == right ||*/ !boost::typeindex::detail::constexpr_strcmp(left, right);
+#ifdef __cpp_lib_is_constant_evaluated
+    if (!std::is_constant_evaluated()) {
+        if (left == right) {
+            return true;
+        }
+    }
+#endif
+    return !boost::typeindex::detail::constexpr_strcmp(left, right);
 }
 
 BOOST_CXX14_CONSTEXPR inline bool ctti_type_index::before(const ctti_type_index& rhs) const noexcept {
     const char* const left = raw_name();
     const char* const right = rhs.raw_name();
-    return /*left != right &&*/ boost::typeindex::detail::constexpr_strcmp(left, right) < 0;
+#ifdef __cpp_lib_is_constant_evaluated
+    if (!std::is_constant_evaluated()) {
+        if (left == right) {
+            return false;
+        }
+    }
+#endif
+    return boost::typeindex::detail::constexpr_strcmp(left, right) < 0;
 }
 
 
