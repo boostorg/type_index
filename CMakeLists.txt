@@ -31,11 +31,12 @@ if(BOOST_USE_MODULES)
 
     add_library(boost_type_index)
 
-    target_sources(boost_type_index
+    target_sources(
+        boost_type_index
         PUBLIC
             FILE_SET modules_public
-            TYPE CXX_MODULES
-            FILES modules/boost_type_index.cppm
+                TYPE CXX_MODULES
+                FILES modules/boost_type_index.cppm
     )
 
     # Require C++20 for modules
@@ -59,6 +60,9 @@ else()
     # Modules disabled -> INTERFACE library
     add_library(boost_type_index INTERFACE)
 
+    # If modules are disabled, require C++17 for headers
+    target_compile_features(boost_type_index INTERFACE cxx_std_17)
+
     # Verify interface headers only at top level
     if(PROJECT_IS_TOP_LEVEL)
         set(CMAKE_VERIFY_INTERFACE_HEADER_SETS ON)
@@ -71,37 +75,32 @@ endif()
 # -----------------------------------------------------------------------------
 # Include headers
 # -----------------------------------------------------------------------------
-if(CMAKE_VERSION VERSION_LESS 3.23)
-    target_include_directories(boost_type_index ${__scope} include)
-else()
+if(BOOST_USE_MODULES)
     target_sources(
         boost_type_index
-        ${__scope}
-        FILE_SET headers_public
-        TYPE HEADERS
-        BASE_DIRS include
-        FILES
-            include/boost/type_index.hpp
-            include/boost/type_index/runtime_cast.hpp
-            include/boost/type_index/stl_type_index.hpp
-            include/boost/type_index/detail/compile_time_type_info.hpp
-            include/boost/type_index/detail/stl_register_class.hpp
-            include/boost/type_index/detail/config.hpp
-            include/boost/type_index/detail/ctti_register_class.hpp
-            include/boost/type_index/ctti_type_index.hpp
-            include/boost/type_index/runtime_cast/std_shared_ptr_cast.hpp
-            include/boost/type_index/runtime_cast/detail/runtime_cast_impl.hpp
-            include/boost/type_index/runtime_cast/register_runtime_class.hpp
-            include/boost/type_index/runtime_cast/pointer_cast.hpp
-            include/boost/type_index/runtime_cast/reference_cast.hpp
-            include/boost/type_index/runtime_cast/boost_shared_ptr_cast.hpp
-            include/boost/type_index/type_index_facade.hpp
+        PUBLIC
+            FILE_SET headers_public
+                TYPE HEADERS
+                BASE_DIRS include
+                FILES
+                    include/boost/type_index.hpp
+                    include/boost/type_index/runtime_cast.hpp
+                    include/boost/type_index/stl_type_index.hpp
+                    include/boost/type_index/detail/compile_time_type_info.hpp
+                    include/boost/type_index/detail/stl_register_class.hpp
+                    include/boost/type_index/detail/config.hpp
+                    include/boost/type_index/detail/ctti_register_class.hpp
+                    include/boost/type_index/ctti_type_index.hpp
+                    include/boost/type_index/runtime_cast/std_shared_ptr_cast.hpp
+                    include/boost/type_index/runtime_cast/detail/runtime_cast_impl.hpp
+                    include/boost/type_index/runtime_cast/register_runtime_class.hpp
+                    include/boost/type_index/runtime_cast/pointer_cast.hpp
+                    include/boost/type_index/runtime_cast/reference_cast.hpp
+                    include/boost/type_index/runtime_cast/boost_shared_ptr_cast.hpp
+                    include/boost/type_index/type_index_facade.hpp
     )
-
-    # If modules are disabled, require C++17 for headers
-    if(NOT BOOST_USE_MODULES)
-        target_compile_features(boost_type_index ${__scope} cxx_std_17)
-    endif()
+else()
+    target_include_directories(boost_type_index ${__scope} include)
 endif()
 
 # -----------------------------------------------------------------------------
