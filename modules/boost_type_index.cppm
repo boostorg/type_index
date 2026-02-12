@@ -9,8 +9,6 @@
 module;
 
 #include <version>
-#include <cstddef>
-#include <cstdint>
 
 #if __has_include(<cxxabi.h>)
 #  include <cxxabi.h>
@@ -21,7 +19,11 @@ module;
 #include <boost/container_hash/hash.hpp>
 #include <boost/throw_exception.hpp>
 
-#ifndef BOOST_TYPE_INDEX_USE_STD_MODULE
+#ifdef BOOST_TYPE_INDEX_USE_STD_MODULE
+import std;
+#else
+#include <cstdint>
+#include <cstddef>
 #include <cstring>
 #include <cstdlib>
 #include <iosfwd>
@@ -35,12 +37,6 @@ module;
 #define BOOST_TYPE_INDEX_INTERFACE_UNIT
 
 export module boost.type_index;
-
-#ifdef BOOST_TYPE_INDEX_USE_STD_MODULE
-// Should not be in the global module fragment
-// https://eel.is/c++draft/module#global.frag-1
-import std;
-#endif
 
 #ifdef __clang__
 #   pragma clang diagnostic ignored "-Winclude-angled-in-module-purview"
