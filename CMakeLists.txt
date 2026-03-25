@@ -6,7 +6,7 @@
 # Distributed under the Boost Software License, Version 1.0.
 # https://www.boost.org/LICENSE_1_0.txt
 
-cmake_minimum_required(VERSION 3.21...4.2)
+cmake_minimum_required(VERSION 3.21...4.3)
 
 project(boost_type_index VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES CXX)
 
@@ -47,7 +47,7 @@ if(BOOST_USE_MODULES)
     # Check if import std; is available for the current standard
     if(${CMAKE_CXX_STANDARD} IN_LIST CMAKE_CXX_COMPILER_IMPORT_STD)
         target_compile_definitions(boost_type_index PUBLIC BOOST_TYPE_INDEX_USE_STD_MODULE)
-        set_property(TARGET boost_type_index CXX_MODULE_STD ON)
+        set_property(TARGET boost_type_index PROPERTY CXX_MODULE_STD ON)
         message(STATUS "Boost.type_index: Using `import std;`")
     else()
         message(WARNING "Boost.type_index: `import std;` is not available for C++${CMAKE_CXX_STANDARD}")
