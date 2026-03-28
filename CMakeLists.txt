@@ -75,7 +75,8 @@ endif()
 # -----------------------------------------------------------------------------
 # Include headers
 # -----------------------------------------------------------------------------
-if(BOOST_USE_MODULES)
+# Note: usable starting with cmake v3.23
+if(NOT CMAKE_VERSION VERSION_LESS 3.23)
     target_sources(
         boost_type_index
         PUBLIC
@@ -107,7 +108,7 @@ endif()
 # Link dependencies
 # -----------------------------------------------------------------------------
 if(PROJECT_IS_TOP_LEVEL)
-    target_link_libraries(boost_any ${__scope} Boost::headers)
+    target_link_libraries(boost_type_index ${__scope} Boost::headers)
 else()
     target_link_libraries(boost_type_index
         ${__scope}
