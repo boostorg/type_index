@@ -28,8 +28,10 @@
 #include <boost/type_index/detail/compile_time_type_info.hpp>
 
 #if !defined(BOOST_TYPE_INDEX_INTERFACE_UNIT)
+#ifndef BOOST_TYPE_INDEX_USE_STD_MODULE
 #include <cstring>
 #include <type_traits>
+#endif
 
 #include <boost/container_hash/hash.hpp>
 #endif
