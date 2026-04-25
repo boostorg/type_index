@@ -20,6 +20,8 @@ jobs:
           - toolset: gcc-14  # Do not remove! It is the only toolset that tests CMake tests down below
             cxxstd: "03,11,14,17,20"
             os: ubuntu-24.04
+            cxx-compiler: g++-14
+            cc-compiler: gcc-14
           - toolset: gcc-12
             cxxstd: "03,11,14,17,2a"
             os: ubuntu-22.04
@@ -84,14 +86,14 @@ jobs:
           ./b2 -j4 variant=debug tools/inspect
 
       - name: Run CMake tests
-        if: ${{matrix.toolset == 'gcc-14'}}
+        if: ${{matrix.toolset == 'gcc-14' || matrix.toolset == 'clang-19'}}
         run: |
           cd ../boost-root/
           cmake -S . -B __build \
             -DBUILD_TESTING=1 \
             -DBOOST_INCLUDE_LIBRARIES=type_index \
-            -DCMAKE_CXX_COMPILER=g++-14 \
-            -DCMAKE_C_COMPILER=gcc-14
+            -DCMAKE_CXX_COMPILER=${{matrix.cxx-compiler}} \
+            -DCMAKE_C_COMPILER=${{matrix.cc-compiler}}
           cmake --build __build --target tests
           ctest --test-dir __build --output-on-failure --no-tests=error
           rm -rf __build
