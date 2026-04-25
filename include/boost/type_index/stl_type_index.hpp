@@ -51,7 +51,7 @@
 # include <cstddef>
 #endif
 
-#endif
+#endif // BOOST_TYPE_INDEX_USE_STD_MODULE
 
 #include <boost/throw_exception.hpp>
 
