@@ -50,6 +50,8 @@ jobs:
           - toolset: clang-19
             cxxstd: "20,23"
             os: ubuntu-24.04
+            cxx-compiler: clang++-19
+            cc-compiler: clang-19
             install: clang-19 llvm-19 libclang-rt-19-dev libc++-19-dev libc++abi-19-dev clang-tools-19
 
     runs-on: ${{matrix.os}}
