@@ -103,7 +103,7 @@ jobs:
           cmake -S test/cmake_subdir_test/ -B build_module \
             -GNinja \
             -DBOOST_USE_MODULES=1 \
-            -DBUILD_TESTING=1
+            -DBUILD_TESTING=1 \
             -DCMAKE_CXX_COMPILER=clang++-19
           cmake --build build_module
           ctest --test-dir build_module -VV --output-on-failure --no-tests=error
