@@ -13,6 +13,10 @@
     of your type index class:
 */
 
+#ifdef BOOST_USE_MODULES
+#undef BOOST_USE_MODULES
+#endif
+
 // BOOST_TYPE_INDEX_USER_TYPEINDEX must be defined *BEFORE* first inclusion of <boost/type_index.hpp>
 #define BOOST_TYPE_INDEX_USER_TYPEINDEX <user_defined_typeinfo.hpp>
 #include <boost/type_index.hpp>
