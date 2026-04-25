@@ -9,17 +9,21 @@ project(boost_type_index VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES CXX)
 
 if (BOOST_USE_MODULES)
     add_library(boost_type_index)
-    target_sources(boost_type_index PUBLIC
-        FILE_SET modules_public TYPE CXX_MODULES FILES modules/boost_type_index.cppm
+    target_sources(boost_type_index
+        PUBLIC
+            FILE_SET CXX_MODULES
+            BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/modules
+            FILES ${CMAKE_CURRENT_SOURCE_DIR}/modules/boost_type_index.cppm
     )
 
-    target_compile_features(boost_type_index PUBLIC cxx_std_20)
     target_compile_definitions(boost_type_index PUBLIC BOOST_USE_MODULES)
     if (CMAKE_CXX_COMPILER_IMPORT_STD)
+        target_compile_features(boost_type_index PUBLIC cxx_std_23)
         target_compile_definitions(boost_type_index PRIVATE BOOST_TYPE_INDEX_USE_STD_MODULE)
         message(STATUS "Using `import std;`")
     else()
-        message(STATUS "`import std;` is not awailable")
+        target_compile_features(boost_type_index PUBLIC cxx_std_20)
+        message(STATUS "`import std;` is not available")
     endif()
     set(__scope PUBLIC)
 else()

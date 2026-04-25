@@ -108,8 +108,7 @@ jobs:
           rm -rf build_module
 
       - name: Run modules tests
-        if: false
-        #if: ${{matrix.toolset == 'clang-19'}}
+        if: ${{matrix.toolset == 'clang-19'}}
         run: |
           cd ../boost-root/libs/type_index
           mkdir build_module
