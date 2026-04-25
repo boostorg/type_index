@@ -83,16 +83,14 @@ else()
 
     set(__scope INTERFACE)
 endif()
-if(NOT __boost_type_index_use_import_std)
-    target_compile_options(boost_type_index_no_rtti ${__scope} ${BOOST_TYPEINDEX_DETAIL_NO_RTTI})
-    target_compile_options(boost_type_index_no_rtti_no_compat ${__scope} ${BOOST_TYPEINDEX_DETAIL_NO_RTTI})
-    target_compile_definitions(boost_type_index_rtti_no_compat ${__scope} BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY=1)
-    target_compile_definitions(boost_type_index_no_rtti_no_compat ${__scope} BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY=1)
+target_compile_options(boost_type_index_no_rtti ${__scope} ${BOOST_TYPEINDEX_DETAIL_NO_RTTI})
+target_compile_options(boost_type_index_no_rtti_no_compat ${__scope} ${BOOST_TYPEINDEX_DETAIL_NO_RTTI})
+target_compile_definitions(boost_type_index_rtti_no_compat ${__scope} BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY=1)
+target_compile_definitions(boost_type_index_no_rtti_no_compat ${__scope} BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY=1)
 
-    add_library(Boost::type_index_no_rtti ALIAS boost_type_index_no_rtti)
-    add_library(Boost::type_index_rtti_no_compat ALIAS boost_type_index_rtti_no_compat)
-    add_library(Boost::type_index_no_rtti_no_compat ALIAS boost_type_index_no_rtti_no_compat)
-endif()
+add_library(Boost::type_index_no_rtti ALIAS boost_type_index_no_rtti)
+add_library(Boost::type_index_rtti_no_compat ALIAS boost_type_index_rtti_no_compat)
+add_library(Boost::type_index_no_rtti_no_compat ALIAS boost_type_index_no_rtti_no_compat)
 
 # Making libraries that CANNOT work between rtti-on/rtti-off modules
 add_library(boost_type_index_test_lib_nortti SHARED test_lib.cpp)
