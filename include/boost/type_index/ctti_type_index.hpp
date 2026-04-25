@@ -66,12 +66,14 @@ namespace detail {
 /// type_index ti = type_index(foo());
 /// std::cout << ti.pretty_name();
 /// \endcode
+BOOST_TYPE_INDEX_BEGIN_MODULE_EXPORT
 class ctti_data {
 public:
     ctti_data() = delete;
     ctti_data(const ctti_data&) = delete;
     ctti_data& operator=(const ctti_data&) = delete;
 };
+BOOST_TYPE_INDEX_END_MODULE_EXPORT
 
 } // namespace detail
 
