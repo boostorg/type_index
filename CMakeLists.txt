@@ -36,7 +36,7 @@ if (BOOST_USE_MODULES)
 else()
     add_library(boost_type_index INTERFACE)
     target_include_directories(boost_type_index INTERFACE include)
-    target_link_libraries(boost_type_index INTERfACE ${boost_type_index_deps})
+    target_link_libraries(boost_type_index INTERFACE ${boost_type_index_deps})
 endif()
 
 add_library(Boost::type_index ALIAS boost_type_index)
