@@ -55,34 +55,34 @@ foreach (testsourcefile ${EXAMPLE_FILES})
     endif()
 endforeach()
 
-# CMake currently does not support standard std module with multiple compile flags
-if(NOT __boost_type_index_use_import_std)
-
-if(BOOST_USE_MODULES)
+foreach(target IN ITEMS
+    boost_type_index_no_rtti
+    boost_type_index_rtti_no_compat
+    boost_type_index_no_rtti_no_compat
+)
+  if(BOOST_USE_MODULES)
     # C++ modules with different compile flags and definitions must be built separately
+    add_library(${target})
+    target_sources(${target}
+      PUBLIC
+        FILE_SET CXX_MODULES
+        BASE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../"
+        FILES "${CMAKE_CURRENT_SOURCE_DIR}/../modules/boost_type_index.cppm"
+    )
+  else()
+    add_library(${target} INTERFACE)
+    target_link_libraries(${target} INTERFACE Boost::type_index)
+  endif()
 
-    add_library(boost_type_index_no_rtti)
-    boost_type_index_add_module(boost_type_index_no_rtti "${CMAKE_CURRENT_SOURCE_DIR}/..")
+  target_include_directories(${target} ${__scope} ../include)
+  target_link_libraries(${target}
+    ${__scope}
+        Boost::config
+        Boost::container_hash
+        Boost::throw_exception
+  )
+endforeach()
 
-    add_library(boost_type_index_rtti_no_compat)
-    boost_type_index_add_module(boost_type_index_rtti_no_compat "${CMAKE_CURRENT_SOURCE_DIR}/..")
-
-    add_library(boost_type_index_no_rtti_no_compat)
-    boost_type_index_add_module(boost_type_index_no_rtti_no_compat "${CMAKE_CURRENT_SOURCE_DIR}/..")
-
-    set(__scope PUBLIC)
-else()
-    add_library(boost_type_index_no_rtti INTERFACE)
-    target_link_libraries(boost_type_index_no_rtti INTERFACE Boost::type_index)
-
-    add_library(boost_type_index_rtti_no_compat INTERFACE)
-    target_link_libraries(boost_type_index_rtti_no_compat INTERFACE Boost::type_index)
-
-    add_library(boost_type_index_no_rtti_no_compat INTERFACE)
-    target_link_libraries(boost_type_index_no_rtti_no_compat INTERFACE Boost::type_index)
-
-    set(__scope INTERFACE)
-endif()
 target_compile_options(boost_type_index_no_rtti ${__scope} ${BOOST_TYPEINDEX_DETAIL_NO_RTTI})
 target_compile_options(boost_type_index_no_rtti_no_compat ${__scope} ${BOOST_TYPEINDEX_DETAIL_NO_RTTI})
 target_compile_definitions(boost_type_index_rtti_no_compat ${__scope} BOOST_TYPE_INDEX_FORCE_NO_RTTI_COMPATIBILITY=1)
@@ -120,6 +120,4 @@ boost_type_index_test(type_index_crossmodule_no_rtti_test testing_crossmodule.cp
 if(NOT MSVC)  # MSVC sometimes overrides the /GR- and the tests link
     boost_type_index_test(type_index_crossmodule_no_rtti_rtti_compat_test testing_crossmodule.cpp boost_type_index_test_lib_rtti_compat)
     boost_type_index_test(type_index_crossmodule_rtti_nortti_compat_test testing_crossmodule.cpp boost_type_index_test_lib_nortti_compat)
-endif()
-
 endif()
