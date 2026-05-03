@@ -43,17 +43,22 @@ boost_type_index_test(type_index_track_13621 track_13621.cpp Boost::type_index)
 
 boost_type_index_test(type_index_ctti_alignment_test type_index_test_ctti_alignment.cpp Boost::type_index)
 
+get_target_property(_use_import_std boost_type_index CXX_MODULE_STD)
+
 file(GLOB EXAMPLE_FILES "../examples/*.cpp")
 foreach (testsourcefile ${EXAMPLE_FILES})
     get_filename_component(testname ${testsourcefile} NAME_WE)
     boost_type_index_test(type_index_${testname}_example ${testsourcefile} Boost::type_index Boost::unordered)
     target_include_directories(type_index_${testname}_example PRIVATE ../examples)
 
-    if(NOT testname STREQUAL "table_of_names")
+    if((NOT _use_import_std) AND (NOT testname STREQUAL "table_of_names"))
         boost_type_index_test(type_index_${testname}_no_rtti_example ${testsourcefile} Boost::type_index_no_rtti Boost::unordered)
         target_include_directories(type_index_${testname}_no_rtti_example PRIVATE ../examples)
     endif()
 endforeach()
+
+# CMake currently does not support standard stl module with different compile flags
+if (NOT _use_import_std)
 
 foreach(target IN ITEMS
     boost_type_index_no_rtti
@@ -121,4 +126,6 @@ boost_type_index_test(type_index_crossmodule_no_rtti_test testing_crossmodule.cp
 if(NOT MSVC)  # MSVC sometimes overrides the /GR- and the tests link
     boost_type_index_test(type_index_crossmodule_no_rtti_rtti_compat_test testing_crossmodule.cpp boost_type_index_test_lib_rtti_compat)
     boost_type_index_test(type_index_crossmodule_rtti_nortti_compat_test testing_crossmodule.cpp boost_type_index_test_lib_nortti_compat)
+endif()
+
 endif()
