@@ -32,6 +32,10 @@ module;
 #include <type_traits>
 #endif
 
+#ifdef BOOST_TYPE_INDEX_USER_TYPEINDEX
+#include BOOST_TYPE_INDEX_USER_TYPEINDEX
+#endif
+
 #define BOOST_TYPE_INDEX_INTERFACE_UNIT
 
 export module boost.type_index;
