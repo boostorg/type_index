@@ -49,7 +49,7 @@ foreach (testsourcefile ${EXAMPLE_FILES})
     boost_type_index_test(type_index_${testname}_example ${testsourcefile} Boost::type_index Boost::unordered)
     target_include_directories(type_index_${testname}_example PRIVATE ../examples)
 
-    if((NOT __boost_type_index_use_import_std) AND (NOT testname STREQUAL "table_of_names"))
+    if(NOT testname STREQUAL "table_of_names")
         boost_type_index_test(type_index_${testname}_no_rtti_example ${testsourcefile} Boost::type_index_no_rtti Boost::unordered)
         target_include_directories(type_index_${testname}_no_rtti_example PRIVATE ../examples)
     endif()
@@ -69,6 +69,7 @@ foreach(target IN ITEMS
         BASE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../"
         FILES "${CMAKE_CURRENT_SOURCE_DIR}/../modules/boost_type_index.cppm"
     )
+    target_compile_features(${target} PUBLIC cxx_std_20)
   else()
     add_library(${target} INTERFACE)
     target_link_libraries(${target} INTERFACE Boost::type_index)
