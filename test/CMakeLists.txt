@@ -30,41 +30,7 @@ function(boost_type_index_test name sources)
     add_dependencies(tests ${name})
 endfunction()
 
-boost_type_index_test(type_index_test type_index_test.cpp Boost::type_index)
-boost_type_index_test(type_index_constexpr_test type_index_constexpr_test.cpp Boost::type_index)
-boost_type_index_test(type_index_ctti_print_name_test ctti_print_name.cpp Boost::type_index)
-boost_type_index_test(type_index_runtime_cast_test type_index_runtime_cast_test.cpp Boost::type_index Boost::smart_ptr)
-
-boost_type_index_test(type_index_crossmodule_test testing_crossmodule.cpp Boost::type_index boost_type_index_test_lib_rtti)
-boost_type_index_test(type_index_crossmodule_anonymous_test testing_crossmodule_anonymous.cpp Boost::type_index boost_type_index_test_lib_anonymous_rtti)
-
-boost_type_index_test(type_index_compare_ctti_stl_test compare_ctti_stl.cpp Boost::type_index)
-boost_type_index_test(type_index_track_13621 track_13621.cpp Boost::type_index)
-
-boost_type_index_test(type_index_ctti_alignment_test type_index_test_ctti_alignment.cpp Boost::type_index)
-
-get_target_property(_use_import_std boost_type_index CXX_MODULE_STD)
-
-file(GLOB EXAMPLE_FILES "../examples/*.cpp")
-foreach (testsourcefile ${EXAMPLE_FILES})
-    get_filename_component(testname ${testsourcefile} NAME_WE)
-    boost_type_index_test(type_index_${testname}_example ${testsourcefile} Boost::type_index Boost::unordered)
-    target_include_directories(type_index_${testname}_example PRIVATE ../examples)
-
-    if((NOT _use_import_std) AND (NOT testname STREQUAL "table_of_names"))
-        boost_type_index_test(type_index_${testname}_no_rtti_example ${testsourcefile} Boost::type_index_no_rtti Boost::unordered)
-        target_include_directories(type_index_${testname}_no_rtti_example PRIVATE ../examples)
-    endif()
-endforeach()
-
-# CMake currently does not support standard stl module with different compile flags
-if (NOT _use_import_std)
-
-foreach(target IN ITEMS
-    boost_type_index_no_rtti
-    boost_type_index_rtti_no_compat
-    boost_type_index_no_rtti_no_compat
-)
+function(boost_type_index_add_target target)
   if(BOOST_USE_MODULES)
     # C++ modules with different compile flags and definitions must be built separately
     add_library(${target})
@@ -87,6 +53,76 @@ foreach(target IN ITEMS
         Boost::container_hash
         Boost::throw_exception
   )
+endfunction()
+
+boost_type_index_test(type_index_test type_index_test.cpp Boost::type_index)
+boost_type_index_test(type_index_constexpr_test type_index_constexpr_test.cpp Boost::type_index)
+boost_type_index_test(type_index_ctti_print_name_test ctti_print_name.cpp Boost::type_index)
+boost_type_index_test(type_index_runtime_cast_test type_index_runtime_cast_test.cpp Boost::type_index Boost::smart_ptr)
+
+boost_type_index_test(type_index_crossmodule_test testing_crossmodule.cpp Boost::type_index boost_type_index_test_lib_rtti)
+boost_type_index_test(type_index_crossmodule_anonymous_test testing_crossmodule_anonymous.cpp Boost::type_index boost_type_index_test_lib_anonymous_rtti)
+
+boost_type_index_test(type_index_compare_ctti_stl_test compare_ctti_stl.cpp Boost::type_index)
+boost_type_index_test(type_index_track_13621 track_13621.cpp Boost::type_index)
+
+boost_type_index_test(type_index_ctti_alignment_test type_index_test_ctti_alignment.cpp Boost::type_index)
+
+get_target_property(_use_import_std boost_type_index CXX_MODULE_STD)
+
+file(GLOB EXAMPLE_FILES "../examples/*.cpp")
+foreach (testsourcefile ${EXAMPLE_FILES})
+    get_filename_component(testname ${testsourcefile} NAME_WE)
+
+    if(testname STREQUAL "user_defined_typeinfo")
+      continue()
+    endif()
+
+    boost_type_index_test(type_index_${testname}_example ${testsourcefile} Boost::type_index Boost::unordered)
+    target_include_directories(type_index_${testname}_example PRIVATE ../examples)
+
+    if (_use_import_std)
+      continue()
+    endif()
+
+    if(testname STREQUAL "table_of_names")
+      continue()
+    endif()
+
+    boost_type_index_test(type_index_${testname}_no_rtti_example ${testsourcefile} Boost::type_index_no_rtti Boost::unordered)
+    target_include_directories(type_index_${testname}_no_rtti_example PRIVATE ../examples)
+endforeach()
+
+if(BOOST_USE_MODULES)
+  boost_type_index_add_target(boost_type_index_user_defined_typeinfo)
+  target_compile_definitions(boost_type_index_user_defined_typeinfo PRIVATE "BOOST_TYPE_INDEX_USER_TYPEINDEX=<../examples/user_defined_typeinfo.hpp>")
+
+  if(NOT _use_import_std)
+    boost_type_index_add_target(boost_type_index_user_defined_typeinfo_no_rtti)
+    target_compile_options(boost_type_index_user_defined_typeinfo_no_rtti ${__scope} ${BOOST_TYPEINDEX_DETAIL_NO_RTTI})
+    target_compile_definitions(boost_type_index_user_defined_typeinfo_no_rtti PRIVATE "BOOST_TYPE_INDEX_USER_TYPEINDEX=<../examples/user_defined_typeinfo.hpp>")
+  endif()
+else()
+  add_library(boost_type_index_user_defined_typeinfo ALIAS boost_type_index)
+  add_library(boost_type_index_user_defined_typeinfo_nortti ALIAS boost_type_index)
+  target_compile_options(boost_type_index_user_defined_typeinfo_no_rtti ${__scope} ${BOOST_TYPEINDEX_DETAIL_NO_RTTI})
+endif()
+
+boost_type_index_test(type_index_user_defined_typeinfo_example ../examples/user_defined_typeinfo.cpp boost_type_index_user_defined_typeinfo)
+target_include_directories(type_index_user_defined_typeinfo_example PRIVATE ../examples)
+
+# CMake currently does not support standard stl module with different compile flags
+if (NOT _use_import_std)
+
+boost_type_index_test(type_index_user_defined_typeinfo_no_rtti_example ../examples/user_defined_typeinfo.cpp boost_type_index_user_defined_typeinfo_no_rtti)
+target_include_directories(type_index_user_defined_typeinfo_no_rtti_example PRIVATE ../examples)
+
+foreach(target IN ITEMS
+    boost_type_index_no_rtti
+    boost_type_index_rtti_no_compat
+    boost_type_index_no_rtti_no_compat
+)
+  boost_type_index_add_target(${target})
 endforeach()
 
 target_compile_options(boost_type_index_no_rtti ${__scope} ${BOOST_TYPEINDEX_DETAIL_NO_RTTI})
