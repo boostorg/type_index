@@ -93,19 +93,9 @@ foreach (testsourcefile ${EXAMPLE_FILES})
     target_include_directories(type_index_${testname}_no_rtti_example PRIVATE ../examples)
 endforeach()
 
+boost_type_index_add_target(boost_type_index_user_defined_typeinfo)
 if(BOOST_USE_MODULES)
-  boost_type_index_add_target(boost_type_index_user_defined_typeinfo)
   target_compile_definitions(boost_type_index_user_defined_typeinfo PRIVATE "BOOST_TYPE_INDEX_USER_TYPEINDEX=<../examples/user_defined_typeinfo.hpp>")
-
-  if(NOT _use_import_std)
-    boost_type_index_add_target(boost_type_index_user_defined_typeinfo_no_rtti)
-    target_compile_options(boost_type_index_user_defined_typeinfo_no_rtti ${__scope} ${BOOST_TYPEINDEX_DETAIL_NO_RTTI})
-    target_compile_definitions(boost_type_index_user_defined_typeinfo_no_rtti PRIVATE "BOOST_TYPE_INDEX_USER_TYPEINDEX=<../examples/user_defined_typeinfo.hpp>")
-  endif()
-else()
-  add_library(boost_type_index_user_defined_typeinfo ALIAS boost_type_index)
-  add_library(boost_type_index_user_defined_typeinfo_nortti ALIAS boost_type_index)
-  target_compile_options(boost_type_index_user_defined_typeinfo_no_rtti ${__scope} ${BOOST_TYPEINDEX_DETAIL_NO_RTTI})
 endif()
 
 boost_type_index_test(type_index_user_defined_typeinfo_example ../examples/user_defined_typeinfo.cpp boost_type_index_user_defined_typeinfo)
@@ -113,6 +103,12 @@ target_include_directories(type_index_user_defined_typeinfo_example PRIVATE ../e
 
 # CMake currently does not support standard stl module with different compile flags
 if (NOT _use_import_std)
+
+boost_type_index_add_target(boost_type_index_user_defined_typeinfo_no_rtti)
+if(BOOST_USE_MODULES)
+  target_compile_definitions(boost_type_index_user_defined_typeinfo_no_rtti PRIVATE "BOOST_TYPE_INDEX_USER_TYPEINDEX=<../examples/user_defined_typeinfo.hpp>")
+endif()
+target_compile_options(boost_type_index_user_defined_typeinfo_no_rtti ${__scope} ${BOOST_TYPEINDEX_DETAIL_NO_RTTI})
 
 boost_type_index_test(type_index_user_defined_typeinfo_no_rtti_example ../examples/user_defined_typeinfo.cpp boost_type_index_user_defined_typeinfo_no_rtti)
 target_include_directories(type_index_user_defined_typeinfo_no_rtti_example PRIVATE ../examples)
