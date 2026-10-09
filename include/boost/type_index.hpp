@@ -212,7 +212,7 @@ using type_info = type_index::type_info_t;
 /// \throw Nothing.
 /// \return boost::typeindex::type_index with information about the specified type T.
 template <class T>
-inline type_index type_id() noexcept {
+BOOST_TYPEINDEX_IMPL_CONSTEXPR type_index type_id() noexcept {
     return type_index::type_id<T>();
 }
 
@@ -232,7 +232,7 @@ inline type_index type_id() noexcept {
 /// \throw Nothing.
 /// \return boost::typeindex::type_index with information about the specified type T.
 template <class T>
-inline type_index type_id_with_cvr() noexcept {
+BOOST_TYPEINDEX_IMPL_CONSTEXPR type_index type_id_with_cvr() noexcept {
     return type_index::type_id_with_cvr<T>();
 }
 

@@ -129,29 +129,29 @@ private:
     const type_info_t* data_;
 
 public:
-    inline stl_type_index() noexcept
+    BOOST_TYPEINDEX_IMPL_CONSTEXPR stl_type_index() noexcept
         : data_(&typeid(void))
     {}
 
-    inline stl_type_index(const type_info_t& data) noexcept
+    BOOST_TYPEINDEX_IMPL_CONSTEXPR stl_type_index(const type_info_t& data) noexcept
         : data_(&data)
     {}
 
-    inline const type_info_t&  type_info() const noexcept;
+    BOOST_TYPEINDEX_IMPL_CONSTEXPR const type_info_t&  type_info() const noexcept;
 
     inline const char*  raw_name() const noexcept;
     inline const char*  name() const noexcept;
     inline std::string  pretty_name() const;
 
-    inline std::size_t  hash_code() const noexcept;
-    inline bool         equal(const stl_type_index& rhs) const noexcept;
-    inline bool         before(const stl_type_index& rhs) const noexcept;
+    inline std::size_t                  hash_code() const noexcept;
+    BOOST_TYPEINDEX_IMPL_CONSTEXPR bool equal(const stl_type_index& rhs) const noexcept;
+    inline bool                         before(const stl_type_index& rhs) const noexcept;
 
     template <class T>
-    inline static stl_type_index type_id() noexcept;
+    BOOST_TYPEINDEX_IMPL_CONSTEXPR static stl_type_index type_id() noexcept;
 
     template <class T>
-    inline static stl_type_index type_id_with_cvr() noexcept;
+    BOOST_TYPEINDEX_IMPL_CONSTEXPR static stl_type_index type_id_with_cvr() noexcept;
 
     template <class T>
     inline static stl_type_index type_id_runtime(const T& value) noexcept;
@@ -159,7 +159,7 @@ public:
 
 BOOST_TYPE_INDEX_END_MODULE_EXPORT
 
-inline const stl_type_index::type_info_t& stl_type_index::type_info() const noexcept {
+BOOST_TYPEINDEX_IMPL_CONSTEXPR const stl_type_index::type_info_t& stl_type_index::type_info() const noexcept {
     return *data_;
 }
 
@@ -252,8 +252,13 @@ inline std::size_t stl_type_index::hash_code() const noexcept {
 
 /// @endcond
 
-inline bool stl_type_index::equal(const stl_type_index& rhs) const noexcept {
+BOOST_TYPEINDEX_IMPL_CONSTEXPR bool stl_type_index::equal(const stl_type_index& rhs) const noexcept {
 #ifdef BOOST_TYPE_INDEX_CLASSINFO_COMPARE_BY_NAMES
+#ifdef __cpp_lib_is_constant_evaluated
+    if (std::is_constant_evaluated()) {
+        return !!(*data_ == *rhs.data_);
+    }
+#endif
     return raw_name() == rhs.raw_name() || !std::strcmp(raw_name(), rhs.raw_name());
 #else
     return !!(*data_ == *rhs.data_);
@@ -272,7 +277,7 @@ inline bool stl_type_index::before(const stl_type_index& rhs) const noexcept {
 
 
 template <class T>
-inline stl_type_index stl_type_index::type_id() noexcept {
+BOOST_TYPEINDEX_IMPL_CONSTEXPR stl_type_index stl_type_index::type_id() noexcept {
     using no_ref_t = typename std::remove_reference<T>::type;
     using no_cvr_t = typename std::remove_cv<no_ref_t>::type;
     return typeid(no_cvr_t);
@@ -283,7 +288,7 @@ namespace detail {
 }
 
 template <class T>
-inline stl_type_index stl_type_index::type_id_with_cvr() noexcept {
+BOOST_TYPEINDEX_IMPL_CONSTEXPR stl_type_index stl_type_index::type_id_with_cvr() noexcept {
     using type = typename std::conditional<
         std::is_reference<T>::value ||  std::is_const<T>::value || std::is_volatile<T>::value,
         detail::cvr_saver<T>,

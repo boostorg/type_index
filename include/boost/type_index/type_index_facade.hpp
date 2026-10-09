@@ -189,63 +189,63 @@ BOOST_CXX14_CONSTEXPR inline bool operator != (const type_index_facade<Derived, 
 
 // ######################### COMPARISONS with Derived ############################ //
 template <class Derived, class TypeInfo>
-inline bool operator == (const TypeInfo& lhs, const type_index_facade<Derived, TypeInfo>& rhs) noexcept {
+BOOST_TYPEINDEX_IMPL_CONSTEXPR bool operator == (const TypeInfo& lhs, const type_index_facade<Derived, TypeInfo>& rhs) noexcept {
     return Derived(lhs) == rhs;
 }
 
 template <class Derived, class TypeInfo>
-inline bool operator < (const TypeInfo& lhs, const type_index_facade<Derived, TypeInfo>& rhs) noexcept {
+BOOST_TYPEINDEX_IMPL_CONSTEXPR bool operator < (const TypeInfo& lhs, const type_index_facade<Derived, TypeInfo>& rhs) noexcept {
     return Derived(lhs) < rhs;
 }
 
 template <class Derived, class TypeInfo>
-inline bool operator > (const TypeInfo& lhs, const type_index_facade<Derived, TypeInfo>& rhs) noexcept {
+BOOST_TYPEINDEX_IMPL_CONSTEXPR bool operator > (const TypeInfo& lhs, const type_index_facade<Derived, TypeInfo>& rhs) noexcept {
     return rhs < Derived(lhs);
 }
 
 template <class Derived, class TypeInfo>
-inline bool operator <= (const TypeInfo& lhs, const type_index_facade<Derived, TypeInfo>& rhs) noexcept {
+BOOST_TYPEINDEX_IMPL_CONSTEXPR bool operator <= (const TypeInfo& lhs, const type_index_facade<Derived, TypeInfo>& rhs) noexcept {
     return !(Derived(lhs) > rhs);
 }
 
 template <class Derived, class TypeInfo>
-inline bool operator >= (const TypeInfo& lhs, const type_index_facade<Derived, TypeInfo>& rhs) noexcept {
+BOOST_TYPEINDEX_IMPL_CONSTEXPR bool operator >= (const TypeInfo& lhs, const type_index_facade<Derived, TypeInfo>& rhs) noexcept {
     return !(Derived(lhs) < rhs);
 }
 
 template <class Derived, class TypeInfo>
-inline bool operator != (const TypeInfo& lhs, const type_index_facade<Derived, TypeInfo>& rhs) noexcept {
+BOOST_TYPEINDEX_IMPL_CONSTEXPR bool operator != (const TypeInfo& lhs, const type_index_facade<Derived, TypeInfo>& rhs) noexcept {
     return !(Derived(lhs) == rhs);
 }
 
 
 template <class Derived, class TypeInfo>
-inline bool operator == (const type_index_facade<Derived, TypeInfo>& lhs, const TypeInfo& rhs) noexcept {
+BOOST_TYPEINDEX_IMPL_CONSTEXPR bool operator == (const type_index_facade<Derived, TypeInfo>& lhs, const TypeInfo& rhs) noexcept {
     return lhs == Derived(rhs);
 }
 
 template <class Derived, class TypeInfo>
-inline bool operator < (const type_index_facade<Derived, TypeInfo>& lhs, const TypeInfo& rhs) noexcept {
+BOOST_TYPEINDEX_IMPL_CONSTEXPR bool operator < (const type_index_facade<Derived, TypeInfo>& lhs, const TypeInfo& rhs) noexcept {
     return lhs < Derived(rhs);
 }
 
 template <class Derived, class TypeInfo>
-inline bool operator > (const type_index_facade<Derived, TypeInfo>& lhs, const TypeInfo& rhs) noexcept {
+BOOST_TYPEINDEX_IMPL_CONSTEXPR bool operator > (const type_index_facade<Derived, TypeInfo>& lhs, const TypeInfo& rhs) noexcept {
     return Derived(rhs) < lhs;
 }
 
 template <class Derived, class TypeInfo>
-inline bool operator <= (const type_index_facade<Derived, TypeInfo>& lhs, const TypeInfo& rhs) noexcept {
+BOOST_TYPEINDEX_IMPL_CONSTEXPR bool operator <= (const type_index_facade<Derived, TypeInfo>& lhs, const TypeInfo& rhs) noexcept {
     return !(lhs > Derived(rhs));
 }
 
 template <class Derived, class TypeInfo>
-inline bool operator >= (const type_index_facade<Derived, TypeInfo>& lhs, const TypeInfo& rhs) noexcept {
+BOOST_TYPEINDEX_IMPL_CONSTEXPR bool operator >= (const type_index_facade<Derived, TypeInfo>& lhs, const TypeInfo& rhs) noexcept {
     return !(lhs < Derived(rhs));
 }
 
 template <class Derived, class TypeInfo>
-inline bool operator != (const type_index_facade<Derived, TypeInfo>& lhs, const TypeInfo& rhs) noexcept {
+BOOST_TYPEINDEX_IMPL_CONSTEXPR bool operator != (const type_index_facade<Derived, TypeInfo>& lhs, const TypeInfo& rhs) noexcept {
     return !(lhs == Derived(rhs));
 }
 
