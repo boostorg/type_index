@@ -68,7 +68,7 @@ boost_type_index_test(type_index_track_13621 track_13621.cpp Boost::type_index)
 
 boost_type_index_test(type_index_ctti_alignment_test type_index_test_ctti_alignment.cpp Boost::type_index)
 
-get_target_property(_use_import_std boost_type_index CXX_MODULE_STD)
+get_target_property(_use_import_std boost_type_index CMAKE_CXX_MODULE_STD)
 
 file(GLOB EXAMPLE_FILES "../examples/*.cpp")
 foreach (testsourcefile ${EXAMPLE_FILES})
