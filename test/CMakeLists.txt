@@ -68,8 +68,6 @@ boost_type_index_test(type_index_track_13621 track_13621.cpp Boost::type_index)
 
 boost_type_index_test(type_index_ctti_alignment_test type_index_test_ctti_alignment.cpp Boost::type_index)
 
-get_target_property(_use_import_std boost_type_index CMAKE_CXX_MODULE_STD)
-
 file(GLOB EXAMPLE_FILES "../examples/*.cpp")
 foreach (testsourcefile ${EXAMPLE_FILES})
     get_filename_component(testname ${testsourcefile} NAME_WE)
@@ -80,10 +78,6 @@ foreach (testsourcefile ${EXAMPLE_FILES})
 
     boost_type_index_test(type_index_${testname}_example ${testsourcefile} Boost::type_index Boost::unordered)
     target_include_directories(type_index_${testname}_example PRIVATE ../examples)
-
-    if (_use_import_std)
-      continue()
-    endif()
 
     if(testname STREQUAL "table_of_names")
       continue()
